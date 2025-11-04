@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button"
 import { ArrowRight, Award, Shield, Zap } from "lucide-react"
+import { Link } from "react-router"
 
 
 export const ShopHeroSection = () => {
@@ -30,7 +31,7 @@ export const ShopHeroSection = () => {
           </p>
 
           <div className="flex flex-col sm:flex-row gap-4 justify-center animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300 mb-12">
-            <a href="/productos">
+            <Link to="/products">
               <Button
                 size="lg"
                 className="bg-[#1e40af] hover:bg-[#1e3a8a] text-white transition-smooth group px-8 py-6 text-lg shadow-xl hover:shadow-2xl hover:scale-105"
@@ -38,8 +39,8 @@ export const ShopHeroSection = () => {
                 Ver Productos
                 <ArrowRight className="ml-2 h-5 w-5 transition-smooth group-hover:translate-x-1" />
               </Button>
-            </a>
-            <a href="/about">
+            </Link>
+            <Link to="/about">
               <Button
                 size="lg"
                 variant="outline"
@@ -47,7 +48,7 @@ export const ShopHeroSection = () => {
               >
                 Conocer Más
               </Button>
-            </a>
+            </Link>
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-3xl mx-auto animate-in fade-in slide-in-from-bottom-4 duration-700 delay-500">

@@ -1,16 +1,14 @@
 import { backendApi } from "@/api/nutripointApi";
 import type { ProductsResponse } from "@/interfaces/products.interface";
 
-const BASE_URL= import.meta.env.VITE_API_URL;
-
 interface Options {
-    sortBy?: string ;
+    sortBy?: string | null;
     direction?: validDirections;
-    size?: string;
-    marca?: string;
-    precioMin?: number,
-    precioMax?: number,
-    query?: string,
+    size?: number;
+    marca?: string | null;
+    precioMin?: number | null,
+    precioMax?: number | null,
+    query?: string | null,
     page?: number
 }
 
