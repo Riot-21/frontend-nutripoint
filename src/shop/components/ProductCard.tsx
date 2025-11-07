@@ -1,10 +1,11 @@
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter } from "@/components/ui/card"
-import type { Product } from "@/interfaces/product.interface"
+// import type { Product } from "@/interfaces/product.interface"
 import type { ProductInterface } from "@/interfaces/products.interface"
 import { ShoppingCart, Star } from "lucide-react"
 import { useState } from "react"
+import { Link } from "react-router"
 
 interface ProductCardProps {
   product: ProductInterface
@@ -23,7 +24,7 @@ export const ProductCard = ({product}: ProductCardProps) => {
 
   return (
     <Card className="group overflow-hidden transition-smooth hover:shadow-2xl hover:-translate-y-2 border-border/50 bg-card">
-      <a href={`/product/${product.idProducto}`}>
+      <Link to={`/products/${product.idProducto}`}>
         <div className="relative aspect-square overflow-hidden bg-muted">
           <img
             src={product.imagenesUrls[0] || "/placeholder.svg"}
@@ -37,10 +38,10 @@ export const ProductCard = ({product}: ProductCardProps) => {
             <Badge className="absolute top-3 right-3 bg-secondary text-white shadow-lg">Agotado</Badge>
           )}
         </div>
-      </a>
+      </Link>
 
       <CardContent className="p-5">
-        <a href={`/product/${product.idProducto}`}>
+        <Link to={`/products/${product.idProducto}`}>
           <Badge variant="outline" className="mb-3 text-xs border-[#1e40af] text-[#1e40af] bg-[#1e40af]/5">
             {product.descripcion}
           </Badge>
@@ -48,7 +49,7 @@ export const ProductCard = ({product}: ProductCardProps) => {
             {product.nombre}
           </h3>
           <p className="text-sm text-muted-foreground line-clamp-2 mb-3 leading-relaxed">{product.descripcion}</p>
-        </a>
+        </Link>
 
         <div className="flex items-center space-x-1 mb-3">
           <div className="flex">

@@ -1,60 +1,69 @@
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
-import { ProductCard } from "@/shop/components/ProductCard"
-import { ShopFilters } from "@/shop/components/ShopFilters"
-import { useProducts } from "@/shop/hooks/useProducts"
-import { Search, SlidersHorizontal } from "lucide-react"
-import { useState } from "react"
-import { useSearchParams } from "react-router"
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet";
+import { ProductCard } from "@/shop/components/ProductCard";
+import { ShopFilters } from "@/shop/components/ShopFilters";
+import { useProducts } from "@/shop/hooks/useProducts";
+import { Search, SlidersHorizontal } from "lucide-react";
+import { useState } from "react";
+import { useSearchParams } from "react-router";
 
 export const ProductsPage = () => {
-    const [ searchParams, setSearchParams ] = useSearchParams();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([])
-  const [searchQuery, setSearchQuery] = useState("")
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 200])
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([])
-  const [sortBy, setSortBy] = useState("featured")
+  const [searchParams, setSearchParams] = useSearchParams();
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [priceRange, setPriceRange] = useState<[number, number]>([0, 200]);
+  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+  const [sortBy, setSortBy] = useState("featured");
 
-  const query = searchParams.get('query');
+  // const query = searchParams.get("query");
   const handleClearFilters = () => {
-    searchParams.delete('query')
-    setSearchParams(searchParams)
-    setSelectedCategories([])
-    setPriceRange([0, 200])
-    setSelectedBrands([])
-    setSearchQuery("")
+    searchParams.delete("query");
+    setSearchParams(searchParams);
+    setSelectedCategories([]);
+    setPriceRange([0, 200]);
+    setSelectedBrands([]);
+    setSearchQuery("");
   };
 
-  const { data: products } = useProducts({retry: false});
+  const { data: products } = useProducts({ retry: false });
 
+  //   let filteredProducts = mockProducts.filter((product) => {
+  //     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category)
+  //     const matchesSearch =
+  //       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+  //       product.description.toLowerCase().includes(searchQuery.toLowerCase())
+  //     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1]
+  //     const matchesBrand = selectedBrands.length === 0 || selectedBrands.some((brand) => product.name.includes(brand))
 
+  //     return matchesCategory && matchesSearch && matchesPrice && matchesBrand
+  //   })
 
-//   let filteredProducts = mockProducts.filter((product) => {
-//     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category)
-//     const matchesSearch =
-//       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-//       product.description.toLowerCase().includes(searchQuery.toLowerCase())
-//     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1]
-//     const matchesBrand = selectedBrands.length === 0 || selectedBrands.some((brand) => product.name.includes(brand))
-
-//     return matchesCategory && matchesSearch && matchesPrice && matchesBrand
-//   })
-
-//   if (sortBy === "price-asc") {
-//     filteredProducts = [...filteredProducts].sort((a, b) => a.price - b.price)
-//   } else if (sortBy === "price-desc") {
-//     filteredProducts = [...filteredProducts].sort((a, b) => b.price - a.price)
-//   } else if (sortBy === "rating") {
-//     filteredProducts = [...filteredProducts].sort((a, b) => b.rating - a.rating)
-//   } else if (sortBy === "name") {
-//     filteredProducts = [...filteredProducts].sort((a, b) => a.name.localeCompare(b.name))
-//   }
+  //   if (sortBy === "price-asc") {
+  //     filteredProducts = [...filteredProducts].sort((a, b) => a.price - b.price)
+  //   } else if (sortBy === "price-desc") {
+  //     filteredProducts = [...filteredProducts].sort((a, b) => b.price - a.price)
+  //   } else if (sortBy === "rating") {
+  //     filteredProducts = [...filteredProducts].sort((a, b) => b.rating - a.rating)
+  //   } else if (sortBy === "name") {
+  //     filteredProducts = [...filteredProducts].sort((a, b) => a.name.localeCompare(b.name))
+  //   }
 
   return (
     <div className="min-h-screen flex flex-col">
-
       <main className="flex-1">
         {/* Hero Section */}
         <section className="bg-linear-to-br from-black via-[#1a1a1a] to-black text-white py-16">
@@ -63,7 +72,8 @@ export const ProductsPage = () => {
               Todos Nuestros <span className="text-[#3b82f6]">Productos</span>
             </h1>
             <p className="text-lg text-gray-300 max-w-2xl mx-auto text-pretty">
-              Explora nuestra colección completa de suplementos deportivos premium
+              Explora nuestra colección completa de suplementos deportivos
+              premium
             </p>
           </div>
         </section>
@@ -90,7 +100,9 @@ export const ProductsPage = () => {
               <SelectContent>
                 <SelectItem value="featured">Destacados</SelectItem>
                 <SelectItem value="price-asc">Precio: Menor a Mayor</SelectItem>
-                <SelectItem value="price-desc">Precio: Mayor a Menor</SelectItem>
+                <SelectItem value="price-desc">
+                  Precio: Mayor a Menor
+                </SelectItem>
                 <SelectItem value="rating">Mejor Valorados</SelectItem>
                 <SelectItem value="name">Nombre A-Z</SelectItem>
               </SelectContent>
@@ -99,7 +111,10 @@ export const ProductsPage = () => {
             {/* Mobile Filter Button */}
             <Sheet>
               <SheetTrigger asChild>
-                <Button variant="outline" className="md:hidden h-12 bg-transparent">
+                <Button
+                  variant="outline"
+                  className="md:hidden h-12 bg-transparent"
+                >
                   <SlidersHorizontal className="mr-2 h-5 w-5" />
                   Filtros
                 </Button>
@@ -142,31 +157,34 @@ export const ProductsPage = () => {
             {/* Products Grid */}
             <div className="flex-1">
               <div className="mb-4 text-sm text-muted-foreground">
-                Mostrando {products?.content.length || 0} de {products?.totalElements || 0} productos
-              </div>    
+                Mostrando {products?.content.length || 0} de{" "}
+                {products?.totalElements || 0} productos
+              </div>
 
               {!products ? (
-                
                 <div className="text-center py-12">
                   <p className="text-muted-foreground text-lg">
                     No se encontraron productos con los filtros seleccionados.
                   </p>
-                  <Button onClick={handleClearFilters} className="mt-4 bg-transparent" variant="outline">
+                  <Button
+                    onClick={handleClearFilters}
+                    className="mt-4 bg-transparent"
+                    variant="outline"
+                  >
                     Limpiar Filtros
                   </Button>
                 </div>
               ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {products?.content.map((product) => (
-                  <ProductCard key={product.idProducto} product={product} />
-                ))}
-              </div>
+                  {products?.content.map((product) => (
+                    <ProductCard key={product.idProducto} product={product} />
+                  ))}
+                </div>
               )}
             </div>
           </div>
         </section>
       </main>
-
     </div>
-  )
-}
+  );
+};

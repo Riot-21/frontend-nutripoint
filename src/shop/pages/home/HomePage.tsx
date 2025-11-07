@@ -5,6 +5,7 @@ import { ProductCard } from "@/shop/components/ProductCard";
 import { ShopHeroSection } from "@/shop/components/ShopHeroSection";
 import { useProducts } from "@/shop/hooks/useProducts";
 import { ArrowRight } from "lucide-react";
+import { Link } from "react-router";
 
 export const HomePage = () => {
   // const featuredProducts = mockProducts.slice(0, 8);
@@ -13,6 +14,7 @@ export const HomePage = () => {
   const { data: products, isLoading} = useProducts();
 
   if (isLoading) return <CustomScreenLoading></CustomScreenLoading>;
+
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -47,7 +49,7 @@ export const HomePage = () => {
           </div>
 
           <div className="text-center">
-            <a href="/products">
+            <Link to="/products">
               <Button
                 size="lg"
                 className="bg-[#2563eb] hover:bg-[#1d4ed8] transition-smooth hover:scale-105 shadow-lg hover:shadow-xl px-8 py-6 text-lg"
@@ -55,7 +57,7 @@ export const HomePage = () => {
                 Ver Todos los Productos
                 <ArrowRight className="ml-2 h-5 w-5" />
               </Button>
-            </a>
+            </Link>
           </div>
         </section>
 
