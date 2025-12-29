@@ -1,36 +1,36 @@
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 // import type { Product } from "@/interfaces/product.interface"
-import type { ProductInterface } from "@/interfaces/products.interface"
-import { Minus, Plus, ShoppingCart } from "lucide-react"
-import { useState } from "react"
+import type { ProductInterface } from "@/interfaces/products-response.interface";
+import { Minus, Plus, ShoppingCart } from "lucide-react";
+import { useState } from "react";
 
 interface ProductActionsProps {
-  product: ProductInterface
+  product: ProductInterface;
 }
 
 export const ProductActions = ({ product }: ProductActionsProps) => {
-//   const { addItem } = useCart()
-  const [quantity, setQuantity] = useState(1)
-  const [isAdding, setIsAdding] = useState(false)
+  //   const { addItem } = useCart()
+  const [quantity, setQuantity] = useState(1);
+  const [isAdding, setIsAdding] = useState(false);
 
   const handleAddToCart = async () => {
-    setIsAdding(true)
+    setIsAdding(true);
     // addItem(product, quantity)
-    await new Promise((resolve) => setTimeout(resolve, 500))
-    setIsAdding(false)
-  }
+    await new Promise((resolve) => setTimeout(resolve, 500));
+    setIsAdding(false);
+  };
 
   const incrementQuantity = () => {
     if (quantity < product.stock) {
-      setQuantity(quantity + 1)
+      setQuantity(quantity + 1);
     }
-  }
+  };
 
   const decrementQuantity = () => {
     if (quantity > 1) {
-      setQuantity(quantity - 1)
+      setQuantity(quantity - 1);
     }
-  }
+  };
 
   return (
     <>
@@ -81,5 +81,5 @@ export const ProductActions = ({ product }: ProductActionsProps) => {
         )}
       </Button>
     </>
-  )
-}
+  );
+};

@@ -1,5 +1,5 @@
+import { CustomScreenLoading } from "@/components/custom/CustomScreenLoading";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -17,50 +17,35 @@ import {
 import { ProductCard } from "@/shop/components/ProductCard";
 import { ShopFilters } from "@/shop/components/ShopFilters";
 import { useProducts } from "@/shop/hooks/useProducts";
-import { Search, SlidersHorizontal } from "lucide-react";
+import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";
 import { useSearchParams } from "react-router";
 
 export const ProductsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
-  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
-  const [searchQuery, setSearchQuery] = useState("");
-  const [priceRange, setPriceRange] = useState<[number, number]>([0, 200]);
-  const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+
+  // const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  // const [searchQuery, setSearchQuery] = useState("");
+  // const [priceRange, setPriceRange] = useState<[number, number]>([0, 200]);
+  // const [selectedBrands, setSelectedBrands] = useState<string[]>([]);
+
   const [sortBy, setSortBy] = useState("featured");
 
   // const query = searchParams.get("query");
   const handleClearFilters = () => {
     searchParams.delete("query");
     setSearchParams(searchParams);
-    setSelectedCategories([]);
-    setPriceRange([0, 200]);
-    setSelectedBrands([]);
-    setSearchQuery("");
+    // setSelectedCategories([]);
+    // setPriceRange([0, 200]);
+    // setSelectedBrands([]);
+    // setSearchQuery("");
   };
 
-  const { data: products } = useProducts({ retry: false });
+  const { data: products, isLoading } = useProducts({ retry: false });
 
-  //   let filteredProducts = mockProducts.filter((product) => {
-  //     const matchesCategory = selectedCategories.length === 0 || selectedCategories.includes(product.category)
-  //     const matchesSearch =
-  //       product.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-  //       product.description.toLowerCase().includes(searchQuery.toLowerCase())
-  //     const matchesPrice = product.price >= priceRange[0] && product.price <= priceRange[1]
-  //     const matchesBrand = selectedBrands.length === 0 || selectedBrands.some((brand) => product.name.includes(brand))
-
-  //     return matchesCategory && matchesSearch && matchesPrice && matchesBrand
-  //   })
-
-  //   if (sortBy === "price-asc") {
-  //     filteredProducts = [...filteredProducts].sort((a, b) => a.price - b.price)
-  //   } else if (sortBy === "price-desc") {
-  //     filteredProducts = [...filteredProducts].sort((a, b) => b.price - a.price)
-  //   } else if (sortBy === "rating") {
-  //     filteredProducts = [...filteredProducts].sort((a, b) => b.rating - a.rating)
-  //   } else if (sortBy === "name") {
-  //     filteredProducts = [...filteredProducts].sort((a, b) => a.name.localeCompare(b.name))
-  //   }
+  if(isLoading){
+    return <CustomScreenLoading></CustomScreenLoading>;
+  }
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -81,8 +66,8 @@ export const ProductsPage = () => {
         {/* Products Section */}
         <section className="container mx-auto px-4 py-12">
           {/* Search and Sort Bar */}
-          <div className="mb-8 flex flex-col md:flex-row gap-4">
-            <div className="flex-1 relative">
+          <div className="mb-8 flex flex-col md:flex-row gap-4 justify-items-center">
+            {/* <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-muted-foreground" />
               <Input
                 type="search"
@@ -91,7 +76,7 @@ export const ProductsPage = () => {
                 onChange={(e) => setSearchQuery(e.target.value)}
                 className="pl-10 h-12 transition-smooth focus:ring-2 focus:ring-[#3b82f6]"
               />
-            </div>
+            </div> */}
 
             <Select value={sortBy} onValueChange={setSortBy}>
               <SelectTrigger className="w-full md:w-[200px] h-12">
@@ -109,11 +94,12 @@ export const ProductsPage = () => {
             </Select>
 
             {/* Mobile Filter Button */}
+            
             <Sheet>
               <SheetTrigger asChild>
                 <Button
                   variant="outline"
-                  className="md:hidden h-12 bg-transparent"
+                  className="lg:hidden h-12 bg-transparent"
                 >
                   <SlidersHorizontal className="mr-2 h-5 w-5" />
                   Filtros
@@ -125,13 +111,13 @@ export const ProductsPage = () => {
                 </SheetHeader>
                 <div className="mt-6">
                   <ShopFilters
-                    selectedCategories={selectedCategories}
-                    onCategoriesChange={setSelectedCategories}
-                    priceRange={priceRange}
-                    onPriceRangeChange={setPriceRange}
-                    selectedBrands={selectedBrands}
-                    onBrandsChange={setSelectedBrands}
-                    onClearFilters={handleClearFilters}
+                    // selectedCategories={selectedCategories}
+                    // onCategoriesChange={setSelectedCategories}
+                    // priceRange={priceRange}
+                    // onPriceRangeChange={setPriceRange}
+                    // selectedBrands={selectedBrands}
+                    // onBrandsChange={setSelectedBrands}
+                    // onClearFilters={handleClearFilters}
                   />
                 </div>
               </SheetContent>
@@ -143,13 +129,13 @@ export const ProductsPage = () => {
             <aside className="hidden lg:block w-64 shrink-0">
               <div className="sticky top-4">
                 <ShopFilters
-                  selectedCategories={selectedCategories}
-                  onCategoriesChange={setSelectedCategories}
-                  priceRange={priceRange}
-                  onPriceRangeChange={setPriceRange}
-                  selectedBrands={selectedBrands}
-                  onBrandsChange={setSelectedBrands}
-                  onClearFilters={handleClearFilters}
+                  // selectedCategories={selectedCategories}
+                  // onCategoriesChange={setSelectedCategories}
+                  // priceRange={priceRange}
+                  // onPriceRangeChange={setPriceRange}
+                  // selectedBrands={selectedBrands}
+                  // onBrandsChange={setSelectedBrands}
+                  // onClearFilters={handleClearFilters}
                 />
               </div>
             </aside>
@@ -161,7 +147,7 @@ export const ProductsPage = () => {
                 {products?.totalElements || 0} productos
               </div>
 
-              {!products ? (
+              {!products || products?.content.length===0 ? (
                 <div className="text-center py-12">
                   <p className="text-muted-foreground text-lg">
                     No se encontraron productos con los filtros seleccionados.

@@ -40,9 +40,9 @@ export const HomePage = () => {
           <div className=" grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-12">
             { !products || !products.content || products.content.length === 0 ? (
               <p className="text-xl justify-center">No se encontraron productos.</p>
-            ) : products.content.slice(0, 6).map((product) => (
+            ) : products.content.slice(0, 4).map((product) => (
               // <div key={product.idProducto} className="product-card-animate opacity-0">
-              <div key={product.idProducto} className="animate-in fade-in slide-in-from-bottom-8 duration-700"> 
+              <div key={`home-${product.idProducto}`} className="animate-in fade-in slide-in-from-bottom-8 duration-700"> 
                 <ProductCard product={product} />
               </div>
             ))}

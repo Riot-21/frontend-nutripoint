@@ -1,3 +1,4 @@
+import { CustomScreenLoading } from "@/components/custom/CustomScreenLoading"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
@@ -6,22 +7,27 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 // import { mockProducts } from "@/mocks/product.mock"
 import { ProductActions } from "@/shop/components/product-details/ProductActions"
 // import { ProductCarousel } from "@/shop/components/product-details/ProductCarousel"
-import { ShopFooter } from "@/shop/components/ShopFooter"
-import { ShopHeader } from "@/shop/components/ShopHeader"
 import { useProductById } from "@/shop/hooks/useProductById"
-import { ArrowLeft, Check, Package, Shield, Star, Truck } from "lucide-react"
-import { Link, useParams } from "react-router"
+import { ArrowLeft, Package, Shield,  Truck } from "lucide-react"
+import { Link, Navigate,  useParams } from "react-router"
 
 export const ProductPage = () => {
   // const resolvedParams = await params
   const { id } = useParams();
+  // const navigate = useNavigate();
 
-  const { data: product } = useProductById(Number(id));
+  const { data: product, isError, isLoading } = useProductById(Number(id));
   // const product = mockProducts.find((p) => p.id === id)
 
-  if (!product || !id) {
-    // notFound()
-    return <Link to={'products'}></Link>
+  if(isLoading){
+    return <CustomScreenLoading></CustomScreenLoading>
+  }
+
+  if (isError || !product ) {
+    //navigate() se usa dentro de handlers-funciones
+    // navigate('/products')
+    //replace para evitar volver atras y estar en la apgina con error
+     return <Navigate to={'/products'} replace></Navigate>
   }
 
   // const relatedProducts = mockProducts.filter((p) => p.category === product.category && p.id !== product.id).slice(0, 6)
@@ -48,7 +54,7 @@ export const ProductPage = () => {
           </div>
 
           {/* Back Button */}
-          <Link to="/productos">
+          <Link to="/products">
             <Button variant="ghost" className="mb-6 -ml-4 transition-smooth hover:bg-accent">
               <ArrowLeft className="mr-2 h-4 w-4" />
               Volver a Productos

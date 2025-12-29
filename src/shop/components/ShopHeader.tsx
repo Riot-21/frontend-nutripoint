@@ -5,7 +5,7 @@ import { Search, Menu, X } from "lucide-react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Link, useNavigate } from "react-router";
+import { Link, useNavigate, useSearchParams } from "react-router";
 import { ShopNavbar } from "./ShopNavBar";
 import { useProducts } from "../hooks/useProducts";
 
@@ -14,6 +14,7 @@ export const ShopHeader = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useState("");
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [searchParams, setSearchParams] = useSearchParams();
 
   const { data, refetch, isFetched } = useProducts({
     enabled: false,
@@ -30,7 +31,12 @@ export const ShopHeader = () => {
     if (!value) {
       return;
     }
-    navigate(`/products?query=${value}`);
+    // const newParams = new URLSearchParams(searchParams);
+    navigate(`/products`);
+
+    searchParams.set('query', value)
+    setSearchParams(searchParams);
+
     setQuery("");
     setIsSearchOpen(false);
   };
@@ -44,10 +50,13 @@ export const ShopHeader = () => {
     const delay = setTimeout(() => {
       setIsSearchOpen(true);
       refetch();
-    }, 2000);
+      console.log('buscado: ', query)
+    }, 2500);
+    console.log('hola')
 
     return () => clearTimeout(delay);
-  }, [query, refetch]);
+  }, [query]);
+
 
   useEffect(() => {
     function handleClickOutside(event: MouseEvent) {
@@ -134,16 +143,18 @@ export const ShopHeader = () => {
               isFetched &&
               data &&
               data.content.length > 0 && (
-                <Card className="absolute top-full mt-2 w-full max-h-[400px] overflow-y-auto shadow-lg border-border/50 animate-in fade-in-0 zoom-in-95 duration-200">
+                <Card className="absolute top-full mt-2 w-full max-h-[400px] overflow-y-auto shadow-lg border-border/50 animate-in fade-in-0 zoom-in-95 duration-200"
+                onMouseDown={(e) => e.stopPropagation()}>
                   <div className="p-2">
                     {data.content.map((product) => (
-                      <a
-                        key={product.idProducto}
-                        href={`/product/${product.idProducto}`}
+                      <Link
+                        key={`drop-${product.idProducto}`}
+                        to={`/products/${product.idProducto}`}
                         onClick={() => {
                           setIsSearchOpen(false);
                           setQuery("");
                         }}
+                        // onClick={() => console.log("CLICK", product.idProducto)}
                         className="flex items-center gap-3 p-3 rounded-lg hover:bg-accent/10 transition-smooth text-blue-900"
                       >
                         <div className="relative w-12 h-12 shrink-0 bg-muted rounded-md overflow-hidden">
@@ -164,9 +175,9 @@ export const ShopHeader = () => {
                         <div className="text-sm font-bold text-accent-foreground">
                           ${product.preciounit}
                         </div>
-                      </a>
+                      </Link>
                     ))}
-                  </div>
+                    </div>
                 </Card>
               )}
           </div>
@@ -189,7 +200,7 @@ export const ShopHeader = () => {
               </a>
             )} */}
 
-            {/*!!REVISAR */}
+            {/* !REVISAR */}
             {/* <CartSidebar /> */}
 
             {/* Mobile Menu */}
@@ -280,9 +291,9 @@ export const ShopHeader = () => {
               <Card className="absolute top-full mt-2 w-full max-h-[300px] overflow-y-auto shadow-lg border-border/50 animate-in fade-in-0 zoom-in-95 duration-200">
                 <div className="p-2">
                   {data?.content.map((product) => (
-                    <a
-                      key={product.idProducto}
-                      href={`/product/${product.idProducto}`}
+                    <Link
+                      key={`drop-${product.idProducto}`}
+                      to={`/products/${product.idProducto}`}
                       onClick={() => {
                         setIsSearchOpen(false);
                         setQuery("");
@@ -307,7 +318,7 @@ export const ShopHeader = () => {
                       <div className="text-sm font-bold text-accent">
                         ${product.preciounit}
                       </div>
-                    </a>
+                    </Link>
                   ))}
                 </div>
               </Card>

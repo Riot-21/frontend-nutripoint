@@ -7,8 +7,8 @@ export interface ProductsResponse {
     size:             number;
     number:           number;
     sort:             Sort;
-    first:            boolean;
     numberOfElements: number;
+    first:            boolean;
     empty:            boolean;
 }
 
@@ -21,8 +21,10 @@ export interface ProductInterface {
     preciounit:   number;
     modEmpleo:    string;
     advert:       string;
-    imagenesUrls: string[];
+    categorias:   string[];
+    imagenesUrls: any[];
 }
+
 
 export interface Pageable {
     pageNumber: number;
@@ -38,3 +40,11 @@ export interface Sort {
     sorted:   boolean;
     unsorted: boolean;
 }
+
+export interface CategoriesResponse {
+    idCategory: number;
+    categoria:  string;
+    objetivo:   string;
+}
+
+
