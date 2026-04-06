@@ -1,5 +1,7 @@
+import type { ProductInterface } from "./products-response.interface"
+
 export interface Product {
-  id: string
+  id: number
   name: string
   description: string
   price: number
@@ -16,7 +18,7 @@ export interface Product {
 }
 
 export interface CartItem {
-  product: Product
+  product: ProductInterface
   quantity: number
 }
 

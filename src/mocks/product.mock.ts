@@ -3,7 +3,7 @@ import type { Product } from "@/interfaces/product.interface"
 
 export const mockProducts: Product[] = [
   {
-    id: "1",
+    id: 1,
     name: "Whey Protein Isolate",
     description: "Proteína de suero aislada de máxima pureza con 90% de contenido proteico",
     price: 49.99,
@@ -19,7 +19,7 @@ export const mockProducts: Product[] = [
     brand: "NutriPoint Pro",
   },
   {
-    id: "2",
+    id: 2,
     name: "Creatina Monohidrato",
     description: "Creatina micronizada de grado farmacéutico para máximo rendimiento",
     price: 29.99,
@@ -35,7 +35,7 @@ export const mockProducts: Product[] = [
     brand: "NutriPoint Pro",
   },
   {
-    id: "3",
+    id: 3,
     name: "BCAA 2:1:1",
     description: "Aminoácidos de cadena ramificada en proporción óptima",
     price: 34.99,
@@ -51,7 +51,7 @@ export const mockProducts: Product[] = [
     brand: "NutriPoint Elite",
   },
   {
-    id: "4",
+    id: 4,
     name: "Pre-Workout Extreme",
     description: "Fórmula avanzada pre-entreno con cafeína y beta-alanina",
     price: 39.99,
@@ -67,7 +67,7 @@ export const mockProducts: Product[] = [
     brand: "NutriPoint Extreme",
   },
   {
-    id: "5",
+    id: 5,
     name: "Omega-3 Ultra",
     description: "Aceite de pescado purificado con alta concentración de EPA y DHA",
     price: 24.99,
@@ -83,7 +83,7 @@ export const mockProducts: Product[] = [
     brand: "NutriPoint Health",
   },
   {
-    id: "6",
+    id: 6,
     name: "Multivitamínico Sport",
     description: "Complejo vitamínico diseñado específicamente para atletas",
     price: 19.99,
@@ -99,7 +99,7 @@ export const mockProducts: Product[] = [
     brand: "NutriPoint Health",
   },
   {
-    id: "7",
+    id: 7,
     name: "Glutamina Pure",
     description: "L-Glutamina pura para recuperación y sistema inmune",
     price: 27.99,
@@ -115,7 +115,7 @@ export const mockProducts: Product[] = [
     brand: "NutriPoint Elite",
   },
   {
-    id: "8",
+    id: 8,
     name: "Mass Gainer Pro",
     description: "Ganador de masa con proteínas de calidad y carbohidratos complejos",
     price: 54.99,

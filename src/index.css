@@ -180,11 +180,17 @@
   @keyframes fade-in {
     from {
       opacity: 0;
+      transform:  translateY(10px);
     }
     to {
       opacity: 1;
+      transform: translateY(0);
     }
   }
+}
+
+.animate-fade-in {
+  animation: fade-in 0.6s ease-out forwards;
 }
 
 @layer utilities {
@@ -199,6 +205,23 @@
 @theme {
   --font-montserrat: "Montserrat Alternates", sans-serif;
 }
+@layer components {
+  .link-underline-smooth {
+    @apply relative inline-block;
+  }
+
+  .link-underline-smooth::after {
+    content: "";
+    @apply absolute left-0 bottom-0 w-full h-px bg-current
+           scale-x-0 origin-left
+           transition-transform duration-300 ease-out;
+  }
+
+  .link-underline-smooth:hover::after {
+    @apply scale-x-100;
+  }
+}
+
 
 /* @layer base {
   html {
