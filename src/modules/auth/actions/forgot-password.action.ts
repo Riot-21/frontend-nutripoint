@@ -1,10 +1,10 @@
-import { backendApi } from "@/api/nutripointApi";
 import axios from "axios";
 import type { ForgotForm, MessageResponse } from "../interfaces/auth-schema.interface";
+import { publicApi } from "@/api/publicApi";
 
 export const forgotPasswordAction = async (form: ForgotForm) => {
   try {
-    const { data } = await backendApi.post<MessageResponse>(
+    const { data } = await publicApi.post<MessageResponse>(
       "/auth/recover-password",
       form,
     );

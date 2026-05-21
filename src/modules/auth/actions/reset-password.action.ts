@@ -1,6 +1,6 @@
-import { backendApi } from "@/api/nutripointApi";
 import axios from "axios";
 import type { MessageResponse, ResetForm } from "../interfaces/auth-schema.interface";
+import { publicApi } from "@/api/publicApi";
 
 type ResetPasswordParams = ResetForm & {
   email: string;
@@ -8,7 +8,7 @@ type ResetPasswordParams = ResetForm & {
 
 export const resetPasswordAction = async (params: ResetPasswordParams) => {
   try {
-    const { data } = await backendApi.post<MessageResponse>(
+    const { data } = await publicApi.post<MessageResponse>(
       "/auth/reset-password",
       params,
     );

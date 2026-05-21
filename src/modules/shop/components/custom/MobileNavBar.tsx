@@ -15,7 +15,7 @@ export const MobileNavBar = ({
 }: MobileNavBarProps) => {
   return (
     <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
-      <SheetTrigger asChild className="md:hidden">
+      <SheetTrigger asChild className="lg:hidden">
         <Button
           variant="ghost"
           size="icon"

@@ -36,9 +36,16 @@ export const GoogleAuthButton = ({ mode }: Props) => {
   };
 
   return (
-    <GoogleLogin
-      onSuccess={handleSuccess}
-      onError={() => toast.error("Google auth falló")}
-    />
+    <div className="flex justify-center w-full">
+      <GoogleLogin
+        onSuccess={handleSuccess}
+        onError={() => toast.error("Google auth falló")}
+        text="continue_with"
+        size="large"
+        theme="outline"
+        shape="square"
+        width="100%"
+      />
+    </div>
   );
 };

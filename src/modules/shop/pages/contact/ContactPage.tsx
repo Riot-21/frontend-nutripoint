@@ -226,7 +226,7 @@ export const ContactPage = () => {
               ></iframe>
             </div>
           </div>
-        </section>
+         </section> 
       </main>
 
     </div>

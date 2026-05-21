@@ -2,10 +2,13 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { CheckCircle, Package, Truck, Mail } from "lucide-react"
-import { Link } from "react-router"
+import { Link, useLocation } from "react-router"
 
 export default function CheckoutSuccessPage() {
-  const [orderNumber] = useState(() => `NP-${Date.now().toString().slice(-8)}`)
+  // const [orderNumber] = useState(() => `NP-${Date.now().toString().slice(-8)}`)
+
+  const location = useLocation();
+  const purchase = location.state?.purchase;
 
   useEffect(() => {
     // Confetti effect could be added here
@@ -39,7 +42,7 @@ export default function CheckoutSuccessPage() {
                 {/* Order Number */}
                 <div className="bg-muted p-4 rounded-lg animate-in fade-in slide-in-from-bottom-4 duration-700 delay-300">
                   <p className="text-sm text-muted-foreground mb-1">Número de Pedido</p>
-                  <p className="text-2xl font-bold text-primary">{orderNumber}</p>
+                  <p className="text-2xl font-bold text-primary">{purchase}</p>
                 </div>
 
                 {/* Next Steps */}

@@ -1,6 +1,6 @@
 import axios from "axios";
-import { backendApi } from "@/api/nutripointApi";
 import type { AuthResponse } from "../interfaces/auth-response.interface";
+import { publicApi } from "@/api/publicApi";
 
 export const googleAuthAction = async (
   token: string,
@@ -10,7 +10,7 @@ export const googleAuthAction = async (
     const endpoint =
       mode == "login" ? "/auth/google-login" : "/auth/google-register";
 
-    const { data } = await backendApi.post<AuthResponse>(endpoint, { token });
+    const { data } = await publicApi.post<AuthResponse>(endpoint, { token });
     return data;
   } catch (error) {
     if (axios.isAxiosError(error)) {

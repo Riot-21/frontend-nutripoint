@@ -6,13 +6,28 @@ import { ProductPage } from "./modules/shop/pages/product/ProductPage";
 import { AboutPage } from "./modules/shop/pages/about/AboutPage";
 import { ContactPage } from "./modules/shop/pages/contact/ContactPage";
 import CartPage from "./modules/shop/pages/cart/CartPage";
-import AuthLayout from "./modules/auth/layouts/AuthLayout";
+// import AuthLayout from "./modules/auth/layouts/AuthLayout";
 import LoginPage from "./modules/auth/pages/login/LoginPage";
 import RegisterPage from "./modules/auth/pages/register/RegisterPage";
 import CheckoutPage from "./modules/shop/pages/checkout/CheckoutPage";
 import CheckoutSuccessPage from "./modules/shop/pages/success/CheckoutSuccessPage";
 import ForgotPasswordPage from "./modules/auth/pages/recover-password/ForgotPasswordPage";
 import ResetPasswordPage from "./modules/auth/pages/recover-password/ResetPasswordPage";
+import { AiChatPage } from "./modules/shop/pages/ai-chat/AiChatPage";
+// import AdminLayout from "./modules/admin/layouts/AdminLayout";
+import { MainDashboard } from "./modules/admin/pages/dashboard/MainDashboard";
+import { UserDashboard } from "./modules/admin/pages/users/UserDashboard";
+import { ProductsDashboard } from "./modules/admin/pages/products/ProductsDashboard";
+import { OrderDashboard } from "./modules/admin/pages/orders/OrderDashboard";
+import {
+  AdminRoute,
+  AuthenticatedRoute,
+  NotAuthenticatedRoute,
+} from "./components/routes/ProtectedRoutes";
+import { lazy } from "react";
+
+const AuthLayout = lazy(() => import("./modules/auth/layouts/AuthLayout"));
+const AdminLayout = lazy(() => import("./modules/admin/layouts/AdminLayout"));
 
 export const appRouter = createBrowserRouter([
   //Main routes
@@ -46,21 +61,37 @@ export const appRouter = createBrowserRouter([
       },
       {
         path: "checkout",
-        element: <CheckoutPage></CheckoutPage>
+        element: (
+          <AuthenticatedRoute>
+            <CheckoutPage></CheckoutPage>
+          </AuthenticatedRoute>
+        ),
       },
       {
         path: "success",
-        element: <CheckoutSuccessPage></CheckoutSuccessPage>
-      }
+        element: (
+          <AuthenticatedRoute>
+            <CheckoutSuccessPage></CheckoutSuccessPage>
+          </AuthenticatedRoute>
+        ),
+      },
+      {
+        path: "ai-chat",
+        element: <AiChatPage></AiChatPage>,
+      },
     ],
   },
   {
     path: "/auth",
-    element: <AuthLayout></AuthLayout>,
+    element: (
+      <NotAuthenticatedRoute>
+        <AuthLayout></AuthLayout>
+      </NotAuthenticatedRoute>
+    ),
     children: [
       {
         index: true,
-        element: <Navigate to='/auth/login'></Navigate>
+        element: <Navigate to="/auth/login"></Navigate>,
       },
       {
         path: "login",
@@ -80,8 +111,32 @@ export const appRouter = createBrowserRouter([
       },
     ],
   },
-
-  //Auth routes, admin routes,etc
+  {
+    path: "/admin",
+    element: (
+      <AdminRoute>
+        <AdminLayout />
+      </AdminRoute>
+    ),
+    children: [
+      {
+        index: true,
+        element: <MainDashboard />,
+      },
+      {
+        path: "users",
+        element: <UserDashboard />,
+      },
+      {
+        path: "products",
+        element: <ProductsDashboard />,
+      },
+      {
+        path: "orders",
+        element: <OrderDashboard />,
+      },
+    ],
+  },
 
   {
     path: "*",

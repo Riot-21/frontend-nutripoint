@@ -1,4 +1,4 @@
-import { backendApi } from "@/api/nutripointApi";
+import { publicApi } from "@/api/publicApi";
 import type { ProductsResponse } from "@/interfaces/products-response.interface";
 
 interface Options {
@@ -21,7 +21,7 @@ export const getProductsAction = async (
   const { query, direction, marcas, page, precioMax, precioMin, size, sortBy, categorias } =
     options;
 
-  const { data } = await backendApi.get<ProductsResponse>("/productos", {
+  const { data } = await publicApi.get<ProductsResponse>("/productos", {
     params: {
       query,
       direction,

@@ -1,10 +1,10 @@
 import axios from "axios";
-import { backendApi } from "@/api/nutripointApi";
 import type { AuthResponse } from "../interfaces/auth-response.interface";
 import {
   loginSchema,
   type LoginForm,
 } from "../interfaces/login-schema.interface";
+import { publicApi } from "@/api/publicApi";
 
 export const loginAction = async (form: LoginForm): Promise<AuthResponse> => {
   const parsed = loginSchema.safeParse(form);
@@ -13,7 +13,7 @@ export const loginAction = async (form: LoginForm): Promise<AuthResponse> => {
   }
 
   try {
-    const { data } = await backendApi.post<AuthResponse>(
+    const { data } = await publicApi.post<AuthResponse>(
       "/auth/login",
       parsed.data,
     );

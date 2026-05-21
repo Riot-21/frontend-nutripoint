@@ -1,10 +1,10 @@
 import axios from "axios";
-import { backendApi } from "@/api/nutripointApi";
 import type { AuthResponse } from "../interfaces/auth-response.interface";
 import {
   registerSchema,
   type RegisterForm,
 } from "../interfaces/register-schema.interface";
+import { publicApi } from "@/api/publicApi";
 
 export const registerAction = async (
   form: RegisterForm,
@@ -15,7 +15,7 @@ export const registerAction = async (
   }
 
   try {
-    const { data } = await backendApi.post<AuthResponse>(
+    const { data } = await publicApi.post<AuthResponse>(
       "/auth/register",
       parsed.data,
     );

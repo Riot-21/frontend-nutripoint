@@ -1,4 +1,4 @@
-import { backendApi } from "@/api/nutripointApi"
+import { publicApi } from "@/api/publicApi"
 
 interface PriceRange {
     min: number,
@@ -6,6 +6,6 @@ interface PriceRange {
 }
 
 export const getPriceRange = async():Promise<PriceRange> => {
-    const { data } = await backendApi.get<PriceRange>("/productos/price-range")
+    const { data } = await publicApi.get<PriceRange>("/productos/price-range")
     return data
 }

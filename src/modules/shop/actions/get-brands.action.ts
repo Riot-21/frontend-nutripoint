@@ -1,7 +1,7 @@
-import { backendApi } from "@/api/nutripointApi"
+import { publicApi } from "@/api/publicApi";
 
 export const getBrands = async(): Promise<string []> => {
-    const { data } = await backendApi.get<string[]>("/marca");
+    const { data } = await publicApi.get<string[]>("/marca");
     return data;
 }
 ;
