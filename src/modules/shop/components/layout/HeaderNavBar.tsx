@@ -1,7 +1,7 @@
 import { NAV_LINKS } from "@/consts/nav-link";
 import { NavLink } from "react-router";
 
-export const ShopNavbar = () => {
+export const HeaderNavBar = () => {
   return (
     <nav className="hidden md:flex items-center space-x-5">
       {NAV_LINKS.map(({ to, label }) => (

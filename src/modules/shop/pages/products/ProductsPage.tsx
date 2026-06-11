@@ -15,8 +15,8 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet";
 import { Pagination } from "@/components/custom/Pagination";
-import { ProductCard } from "@/modules/shop/components/ProductCard";
-import { ShopFilters } from "@/modules/shop/components/ShopFilters";
+import { ProductCard } from "@/modules/shop/components/product/ProductCard";
+import { ShopFilters } from "@/modules/shop/components/product/ShopFilters";
 import { useProducts } from "@/modules/shop/hooks/useProducts";
 import { SlidersHorizontal } from "lucide-react";
 import { useState } from "react";

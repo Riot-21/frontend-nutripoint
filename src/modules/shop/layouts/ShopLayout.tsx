@@ -1,6 +1,6 @@
 import { Outlet } from "react-router";
-import { ShopFooter } from "../components/custom/ShopFooter";
-import { ShopHeader } from "../components/custom/ShopHeader";
+import { ShopFooter } from "../components/layout/ShopFooter";
+import { ShopHeader } from "../components/layout/ShopHeader";
 import { ScrollToTop } from "../../../components/custom/ScrollToTop";
 
 const ShopLayout = () => {

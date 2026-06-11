@@ -13,17 +13,17 @@ import {
   CommandItem,
   CommandList,
 } from "@/components/ui/command";
-import { sortProducts } from "@/helpers/sort-products";
+import { sortProducts } from "@/modules/shop/utils/sort-products";
 
-interface ShopSearchBarProps {
+interface HeaderSearchBarProps {
   className?: string;
   onSearchComplete?: () => void;
 }
 
-export const ShopSearchBar = ({
+export const HeaderSearchBar = ({
   // className,
   onSearchComplete,
-}: ShopSearchBarProps) => {
+}: HeaderSearchBarProps) => {
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams();
   const [query, setQuery] = useState("");
@@ -178,13 +178,13 @@ export const ShopSearchBar = ({
                         handleClear();
                         onSearchComplete?.();
                       }}
-                      className="cursor-pointer"
+                      className="cursor-pointer transition-colors duration-100"
                     >
                       <div className="flex items-center gap-3 w-full">
                         <div className="relative w-12 h-12 shrink-0 bg-muted rounded-md overflow-hidden">
                           <img
                             src={
-                              product.imagenesUrls?.[0] || "/placeholder.svg"
+                              product.imagenes[0]?.url || "/placeholder.svg"
                             }
                             alt={product.nombre}
                             className="object-cover w-full h-full"

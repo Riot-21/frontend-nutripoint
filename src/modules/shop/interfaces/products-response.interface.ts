@@ -22,7 +22,12 @@ export interface ProductInterface {
     modEmpleo:    string;
     advert:       string;
     categorias:   string[];
-    imagenesUrls: any[];
+    imagenes: ImageInterface[];
+}
+
+export interface ImageInterface {
+    idImage: number;
+    url: string;
 }
 
 

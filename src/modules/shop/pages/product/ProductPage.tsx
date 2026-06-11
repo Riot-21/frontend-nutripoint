@@ -5,13 +5,14 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { currencyFormatter } from "@/lib/currency-formatter";
-import { mockProducts } from "@/mocks/product.mock";
+// import { mockProducts } from "@/mocks/product.mock";
 // import { mockProducts } from "@/mocks/product.mock"
-import { ProductActions } from "@/modules/shop/components/product-details/ProductActions";
-import { ProductCarousel } from "@/modules/shop/components/product-details/ProductCarousel";
+import { ProductActions } from "@/modules/shop/components/product/ProductActions";
+import { ProductCarousel } from "@/modules/shop/components/product/ProductCarousel";
 // import { ProductCarousel } from "@/shop/components/product-details/ProductCarousel"
 import { useProductById } from "@/modules/shop/hooks/useProductById";
-import { ArrowLeft, Check, Package, Shield, Star, Truck } from "lucide-react";
+import { useState } from "react";
+import { ArrowLeft, Check, ChevronLeft, ChevronRight, Package, Shield, Star, Truck, X } from "lucide-react";
 import { Link, Navigate, useParams } from "react-router";
 
 export const ProductPage = () => {
@@ -19,7 +20,11 @@ export const ProductPage = () => {
   const { id } = useParams();
   // const navigate = useNavigate();
 
-  const { data: product, isError, isLoading } = useProductById(Number(id));
+  const { data, isError, isLoading } = useProductById(Number(id));
+  const product = data?.product;
+  const relatedProducts = data?.relatedProducts;
+  const [activeImageIndex, setActiveImageIndex] = useState(0);
+  const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   // const product = mockProducts.find((p) => p.id === id)
 
   if (isLoading) {
@@ -33,7 +38,7 @@ export const ProductPage = () => {
     return <Navigate to={"/products"} replace></Navigate>;
   }
 
-  const relatedProducts = mockProducts.slice(0, 6);
+  // const relatedProducts = mockProducts.slice(0, 6);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -66,15 +71,48 @@ export const ProductPage = () => {
           </Link>
 
           {/* Product Details */}
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 animate-fade-in">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16 lg:items-center animate-fade-in">
             {/* Product Image */}
-            <div className="space-y-4">
-              <div className="relative aspect-square rounded-lg overflow-hidden bg-muted">
+            <div className="space-y-4 max-w-lg lg:max-w-none mx-auto w-full">
+              <div 
+                className="relative aspect-square rounded-lg overflow-hidden bg-muted group cursor-pointer"
+                onClick={() => setIsLightboxOpen(true)}
+              >
                 <img
-                  src={product.imagenesUrls[0] || "/placeholder.svg"}
+                  key={activeImageIndex}
+                  src={product.imagenes[activeImageIndex]?.url || "/placeholder.svg"}
                   alt={product.nombre}
-                  className="object-cover"
+                  className="object-cover w-full h-full transition-transform duration-300 ease-in-out animate-fade-in hover:scale-105"
                 />
+                
+                {/* Flechas de navegación (solo si hay más de 1 imagen) */}
+                {product.imagenes.length > 1 && (
+                  <>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveImageIndex((prev) =>
+                          prev === 0 ? product.imagenes.length - 1 : prev - 1
+                        );
+                      }}
+                      className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-black flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
+                      <ChevronLeft className="h-6 w-6" />
+                    </button>
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setActiveImageIndex((prev) =>
+                          prev === product.imagenes.length - 1 ? 0 : prev + 1
+                        );
+                      }}
+                      className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 rounded-full bg-white/80 hover:bg-white text-black flex items-center justify-center shadow-md opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                    >
+                      <ChevronRight className="h-6 w-6" />
+                    </button>
+                  </>
+                )}
+
                 {product.stock < 10 && product.stock > 0 && (
                   <Badge className="absolute top-4 right-4 bg-destructive text-white">
                     Últimas unidades
@@ -86,6 +124,29 @@ export const ProductPage = () => {
                   </Badge>
                 )}
               </div>
+
+              {/* Miniaturas (Thumbnails) */}
+              {product.imagenes.length > 1 && (
+                <div className="flex gap-4 overflow-x-auto py-2 px-2 items-center justify-center">
+                  {product.imagenes.map((image, idx) => (
+                    <button
+                      key={image.idImage}
+                      onClick={() => setActiveImageIndex(idx)}
+                      className={`relative w-20 h-20 shrink-0 rounded-md overflow-hidden bg-muted border-2 transition-all duration-300 ${
+                        activeImageIndex === idx
+                          ? "border-[#3b82f6] scale-105 shadow-md"
+                          : "border-transparent hover:border-gray-300"
+                      }`}
+                    >
+                      <img
+                        src={image.url}
+                        alt={`${product.nombre} thumbnail ${idx + 1}`}
+                        className="object-cover w-full h-full"
+                      />
+                    </button>
+                  ))}
+                </div>
+              )}
             </div>
 
             {/* Product Info */}
@@ -143,7 +204,7 @@ export const ProductPage = () => {
 
               {/* Price */}
               <div>
-                <div className="flex items-baseline space-x-3 mb-2">
+                <div className="flex flex-col md:flex-row items-baseline space-x-3 mb-2">
                   <span className="text-4xl font-bold text-primary">
                     {currencyFormatter(product.preciounit)}
                   </span>
@@ -173,7 +234,7 @@ export const ProductPage = () => {
 
               <ProductActions product={product} />
 
-              <div className="grid grid-cols-2 gap-4 pt-4 ">
+              <div className="grid grid-cols-2 gap-4 pt-4">
                 <Card className="border-border/50 transition-smooth hover:shadow-2xl">
                   <CardContent className="p-4 flex items-center space-x-3">
                     <div className="w-10 h-10 bg-[#3b82f6]/10 rounded-full flex items-center justify-center shrink-0">
@@ -206,7 +267,7 @@ export const ProductPage = () => {
           </div>
 
           {/* Product Details Tabs */}
-          <Card className="mb-6 h-96 border-none">
+          <Card className="mb-6 h-auto border-none shadow-none">
             <CardContent className="p-4">
               <Tabs defaultValue="description" className="w-full">
                 <TabsList className="grid w-full grid-cols-3">
@@ -282,14 +343,74 @@ export const ProductPage = () => {
             </CardContent>
           </Card>
 
-          {/* {relatedProducts.length > 0 &&  */}
-          <ProductCarousel
-            products={relatedProducts}
-            title="Productos Relacionados"
-          />
-          {/* }   */}
+          {relatedProducts && (
+            // <div className="items-center justify-items-center">
+              <ProductCarousel
+                products={relatedProducts}
+                title="Productos Relacionados"
+              />
+            // </div>
+          )}
         </div>
       </main>
+
+      {/* Ventana modal (Lightbox) al hacer clic en la imagen */}
+      {isLightboxOpen && (
+        <div 
+          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center animate-fade-in"
+          onClick={() => setIsLightboxOpen(false)}
+        >
+          <button 
+            className="absolute top-6 right-6 text-white hover:text-gray-300 transition-colors z-50 p-2"
+            onClick={() => setIsLightboxOpen(false)}
+          >
+            <X className="h-8 w-8" />
+          </button>
+
+          {/* Flecha Izquierda */}
+          {product.imagenes.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveImageIndex((prev) =>
+                  prev === 0 ? product.imagenes.length - 1 : prev - 1
+                );
+              }}
+              className="absolute left-6 text-white hover:text-gray-300 transition-colors w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 z-50"
+            >
+              <ChevronLeft className="h-8 w-8" />
+            </button>
+          )}
+
+          {/* Imagen Ampliada */}
+          <div 
+            className="max-w-[90vw] max-h-[85vh] flex items-center justify-center relative"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <img
+              key={activeImageIndex}
+              src={product.imagenes[activeImageIndex]?.url || "/placeholder.svg"}
+              alt={product.nombre}
+              className="max-w-full max-h-[85vh] object-contain rounded-md animate-fade-in"
+            />
+          </div>
+
+          {/* Flecha Derecha */}
+          {product.imagenes.length > 1 && (
+            <button
+              onClick={(e) => {
+                e.stopPropagation();
+                setActiveImageIndex((prev) =>
+                  prev === product.imagenes.length - 1 ? 0 : prev + 1
+                );
+              }}
+              className="absolute right-6 text-white hover:text-gray-300 transition-colors w-12 h-12 flex items-center justify-center rounded-full bg-white/10 hover:bg-white/20 z-50"
+            >
+              <ChevronRight className="h-8 w-8" />
+            </button>
+          )}
+        </div>
+      )}
     </div>
   );
 };

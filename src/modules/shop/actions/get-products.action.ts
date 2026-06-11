@@ -1,5 +1,5 @@
 import { publicApi } from "@/api/publicApi";
-import type { ProductsResponse } from "@/interfaces/products-response.interface";
+import type { ProductsResponse } from "@/modules/shop/interfaces/products-response.interface";
 
 interface Options {
   sortBy?: string | null;
@@ -16,10 +16,19 @@ interface Options {
 type validDirections = "asc" | "desc";
 
 export const getProductsAction = async (
-  options: Options
+  options: Options,
 ): Promise<ProductsResponse> => {
-  const { query, direction, marcas, page, precioMax, precioMin, size, sortBy, categorias } =
-    options;
+  const {
+    query,
+    direction,
+    marcas,
+    page,
+    precioMax,
+    precioMin,
+    size,
+    sortBy,
+    categorias,
+  } = options;
 
   const { data } = await publicApi.get<ProductsResponse>("/productos", {
     params: {
@@ -32,7 +41,7 @@ export const getProductsAction = async (
       precioMin,
       size,
       sortBy,
-    }
+    },
   });
 
   return data;

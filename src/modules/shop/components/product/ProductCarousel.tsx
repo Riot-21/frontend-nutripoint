@@ -1,13 +1,13 @@
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
-import type { Product } from "@/interfaces/product.interface";
 import { ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
+import type { RelatedProduct } from "../../interfaces/product-detail-response.interface";
 
 interface ProductCarouselProps {
-  products: Product[];
+  products: RelatedProduct[];
   title?: string;
 }
 
@@ -51,8 +51,8 @@ export function ProductCarousel({
   if (products.length === 0) return null;
 
   return (
-    <div className="relative">
-      <h2 className="text-2xl md:text-3xl font-bold mb-6">
+    <div className="w-full">
+      <h2 className="text-2xl md:text-3xl font-bold mb-6 text-center">
         {title.split(" ").slice(0, -1).join(" ")}{" "}
         <span className="text-[#5a7db4]">{title.split(" ").slice(-1)}</span>
       </h2>
@@ -79,39 +79,41 @@ export function ProductCarousel({
         <div
           ref={scrollContainerRef}
           onScroll={checkScroll}
-          className="flex gap-6 overflow-x-auto scroll-smooth pb-4 px-1"
+          className="overflow-x-auto scroll-smooth pb-4"
           style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
         >
-          {products.map((product) => (
-            <Link
-              key={product.id}
-              to={`/product/${product.id}`}
-              className="shrink-0 w-[280px] transition-smooth hover:-translate-y-1"
-            >
-              <Card className="group/card overflow-hidden transition-smooth hover:shadow-xl border-border/50 h-full">
-                <div className="relative aspect-square overflow-hidden bg-muted">
-                  <img
-                    src={product.image || "/placeholder.svg"}
-                    alt={product.name}
-                    className="object-cover transition-smooth group-hover/card:scale-110"
-                  />
-                  {product.stock < 10 && product.stock > 0 && (
+          <div className="flex w-max min-w-full justify-center gap-6 px-1">
+            {products.map((product) => (
+              <Link
+                key={product.idProducto}
+                to={`/products/${product.idProducto}`}
+                className="shrink-0 w-[280px] transition-smooth hover:-translate-y-1"
+              >
+                <Card className="group/card overflow-hidden transition-smooth hover:shadow-xl border-border/50 h-full">
+                  <div className="relative aspect-square overflow-hidden bg-muted">
+                    <img
+                      src={product.imagenUrl || "/placeholder.svg"}
+                      alt={product.nombre}
+                      className="object-cover w-full h-full transition-smooth group-hover/card:scale-110"
+                    />
+                    {/* !! REVISAR PARA PASAR STOCK TAMBIEN!!! */}
+                    {/* {product.stock < 10 && product.stock > 0 && (
                     <Badge className="absolute top-2 right-2 bg-destructive text-white text-xs">
                       Últimas unidades
                     </Badge>
-                  )}
-                </div>
-                <CardContent className="p-4">
-                  <Badge
-                    variant="outline"
-                    className="mb-2 text-xs border-[#3b82f6] text-[#3b82f6]"
-                  >
-                    {product.category}
-                  </Badge>
-                  <h3 className="font-semibold mb-2 line-clamp-2 transition-smooth group-hover/card:text-[#3b82f6]">
-                    {product.name}
-                  </h3>
-                  <div className="flex items-center space-x-1 mb-3">
+                  )} */}
+                  </div>
+                  <CardContent className="p-4">
+                    <Badge
+                      variant="outline"
+                      className="mb-2 text-xs border-[#3b82f6] text-[#3b82f6]"
+                    >
+                      {product.categorias}
+                    </Badge>
+                    <h3 className="font-semibold mb-2 line-clamp-2 transition-smooth group-hover/card:text-[#3b82f6]">
+                      {product.nombre}
+                    </h3>
+                    {/* <div className="flex items-center space-x-1 mb-3">
                     <div className="flex">
                       {[...Array(5)].map((_, i) => (
                         <Star
@@ -127,32 +129,33 @@ export function ProductCarousel({
                     <span className="text-xs text-muted-foreground">
                       ({product.reviews})
                     </span>
-                  </div>
-                  <span className="text-xl font-bold text-primary">
-                    ${product.price.toFixed(2)}
-                  </span>
-                </CardContent>
-              </Card>
-            </Link>
-          ))}
-        </div>
+                  </div> */}
+                    <span className="text-xl font-bold text-primary">
+                      ${product.precio.toFixed(2)}
+                    </span>
+                  </CardContent>
+                </Card>
+              </Link>
+            ))}
+          </div>
 
-        {/* Right Arrow */}
-        {canScrollRight && (
-          <Button
-            variant="outline"
-            size="icon"
-            className="absolute -right-4 md:-right-6 top-1/2 -translate-y-1/2 z-20
+          {/* Right Arrow */}
+          {canScrollRight && (
+            <Button
+              variant="outline"
+              size="icon"
+              className="absolute -right-4 md:-right-6 top-1/2 -translate-y-1/2 z-20
                h-12 w-12 rounded-full
                bg-white shadow-xl border
                opacity-0 group-hover:opacity-100
                transition hover:scale-110
                hover:bg-[#5a7db4] hover:text-white"
-            onClick={() => scroll("right")}
-          >
-            <ChevronRight className="h-6 w-6" />
-          </Button>
-        )}
+              onClick={() => scroll("right")}
+            >
+              <ChevronRight className="h-6 w-6" />
+            </Button>
+          )}
+        </div>
       </div>
     </div>
   );

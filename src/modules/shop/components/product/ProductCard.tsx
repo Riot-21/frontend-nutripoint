@@ -2,7 +2,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 // import type { Product } from "@/interfaces/product.interface"
-import type { ProductInterface } from "@/interfaces/products-response.interface";
+import type { ProductInterface } from "@/modules/shop/interfaces/products-response.interface";
 import { currencyFormatter } from "@/lib/currency-formatter";
 import { sleep } from "@/lib/sleep";
 import { useCart } from "@/modules/shop/store/useCart";
@@ -30,9 +30,9 @@ export const ProductCard = ({ product }: ProductCardProps) => {
       <Link to={`/products/${product.idProducto}`}>
         <div className="relative aspect-square overflow-hidden bg-muted">
           <img
-            src={product.imagenesUrls[0] || "/placeholder.svg"}
+            src={product.imagenes[0]?.url || "/placeholder.svg"}
             alt={product.nombre}
-            className="object-cover transition-smooth group-hover:scale-110"
+            className="object-cover w-full h-full transition-smooth group-hover:scale-110"
           />
           {product.stock < 10 && product.stock > 0 && (
             <Badge className="absolute top-3 right-3 bg-destructive text-white shadow-lg">

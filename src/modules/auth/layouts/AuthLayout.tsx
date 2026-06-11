@@ -1,5 +1,5 @@
-import { ShopFooter } from "@/modules/shop/components/custom/ShopFooter";
-import { ShopHeader } from "@/modules/shop/components/custom/ShopHeader";
+import { ShopFooter } from "@/modules/shop/components/layout/ShopFooter";
+import { ShopHeader } from "@/modules/shop/components/layout/ShopHeader";
 import { Outlet } from "react-router";
 import { ScrollToTop } from "@/components/custom/ScrollToTop";
 

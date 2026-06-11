@@ -19,7 +19,7 @@ export const MobileNavBar = ({
         <Button
           variant="ghost"
           size="icon"
-          className="transition-smooth hover:bg-accent/10"
+          className="transition-smooth hover:bg-accent/30"
         >
           {isMenuOpen ? (
             <X className="h-5 w-5" />
@@ -40,23 +40,6 @@ export const MobileNavBar = ({
               {label}
             </Link>
           ))}
-          {/* {user && (
-                    <>
-                      <div className="border-t pt-4">
-                        <p className="text-sm text-muted-foreground mb-2">Hola, {user.name}</p>
-                        <Button
-                          variant="outline"
-                          className="w-full bg-transparent"
-                          onClick={() => {
-                            logout()
-                            setIsMenuOpen(false)
-                          }}
-                        >
-                          Cerrar Sesión
-                        </Button>
-                      </div>
-                    </>
-                  )} */}
         </nav>
       </SheetContent>
     </Sheet>

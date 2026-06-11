@@ -4,7 +4,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Label } from "@/components/ui/label";
 import { Slider } from "@/components/ui/slider";
 import { X } from "lucide-react";
-import { useBrandsAndCategories } from "../hooks/useBrandsAndCategories";
+import { useBrandsAndCategories } from "../../hooks/useBrandsAndCategories";
 import { useSearchParams } from "react-router";
 import { useState, useEffect } from "react";
 

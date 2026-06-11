@@ -71,14 +71,14 @@ export function CartSidebar() {
                   className="flex gap-4 p-4 rounded-lg border border-border hover:bg-muted/50 transition-smooth"
                 >
                   <Link
-                    to={`/product/${item.product.idProducto}`}
+                    to={`/products/${item.product.idProducto}`}
                     onClick={() => setOpen(false)}
                     className="shrink-0"
                   >
                     <div className="relative w-24 h-24 rounded-md overflow-hidden bg-muted">
                       <img
                         src={
-                          item.product.imagenesUrls?.[0] || "/placeholder.svg"
+                          item.product.imagenes[0]?.url || "/placeholder.svg"
                         }
                         alt={item.product.nombre}
                         className="object-cover"
@@ -88,7 +88,7 @@ export function CartSidebar() {
 
                   <div className="flex-1 min-w-0">
                     <Link
-                      to={`/product/${item.product.idProducto}`}
+                      to={`/products/${item.product.idProducto}`}
                       onClick={() => setOpen(false)}
                     >
                       <h4 className="font-semibold text-sm mb-1 line-clamp-2 hover:text-blue-900 transition-smooth">

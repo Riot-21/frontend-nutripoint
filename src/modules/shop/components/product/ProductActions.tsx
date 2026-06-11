@@ -1,5 +1,5 @@
 import { Button } from "@/components/ui/button";
-import type { ProductInterface } from "@/interfaces/products-response.interface";
+import type { ProductInterface } from "@/modules/shop/interfaces/products-response.interface";
 import { currencyFormatter } from "@/lib/currency-formatter";
 import { sleep } from "@/lib/sleep";
 import { useCart } from "@/modules/shop/store/useCart";

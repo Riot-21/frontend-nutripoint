@@ -132,7 +132,6 @@
   --sidebar-ring: oklch(0.55 0.1 250);
 }
 
-
 @layer base {
   * {
     @apply border-border outline-ring/50;
@@ -222,6 +221,36 @@
   }
 }
 
+.scroll-container {
+  scroll-behavior: smooth;
+  scrollbar-gutter: stable;
+}
+
+/* Custom scrollbar styling for webkit (Chrome, Safari, Edge, etc.) */
+.scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scroll-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+  background-color: var(--border);
+  border-radius: 9999px;
+  border: 2px solid transparent;
+  background-clip: padding-box;
+}
+
+.scroll-container::-webkit-scrollbar-thumb:hover {
+  background-color: var(--muted-foreground);
+}
+
+/* Firefox support */
+.scroll-container {
+  scrollbar-width: thin;
+  scrollbar-color: var(--border) transparent;
+}
 
 /* @layer base {
   html {

@@ -1,8 +1,8 @@
 import { CustomScreenLoading } from "@/components/custom/CustomScreenLoading";
 import { Button } from "@/components/ui/button";
-import { Features } from "@/modules/shop/components/custom/Features";
-import { ProductCard } from "@/modules/shop/components/ProductCard";
-import { ShopHeroSection } from "@/modules/shop/components/custom/ShopHeroSection";
+import { Features } from "@/modules/shop/components/home/Features";
+import { ProductCard } from "@/modules/shop/components/product/ProductCard";
+import { ShopHeroSection } from "@/modules/shop/components/home/ShopHeroSection";
 import { useProducts } from "@/modules/shop/hooks/useProducts";
 import { ArrowRight } from "lucide-react";
 import { Link } from "react-router";

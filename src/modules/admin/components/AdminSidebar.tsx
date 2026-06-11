@@ -1,7 +1,6 @@
-import { LogOut, ChevronLeft, ChevronRight, CornerDownLeft } from "lucide-react";
+import { ChevronLeft, ChevronRight, CornerDownLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router";
-// import { useAuthStore } from "@/modules/auth/store/auth.store";
 import { NAV_ADMIN } from "@/consts/nav-admin";
 
 interface AdminSidebarProps {
@@ -14,7 +13,6 @@ export function AdminSidebar({
   setIsCollapsed,
 }: AdminSidebarProps) {
   const { pathname } = useLocation();
-  // const logout = useAuthStore((s) => s.logout);
 
   const isActive = (path: string) =>
     pathname === path || pathname.startsWith(`${path}/`);
@@ -35,7 +33,7 @@ export function AdminSidebar({
           variant="ghost"
           size="icon"
           onClick={() => setIsCollapsed(!isCollapsed)}
-          className={`shrink-0 ${isCollapsed ? "mx-auto" : "ml-auto"}`}
+          className={`shrink-0 hover:bg-blue-900/30 transition-colors duration-150 ${isCollapsed ? "mx-auto" : "ml-auto"}`}
         >
           {isCollapsed ? (
             <ChevronRight className="h-5 w-5" />
@@ -58,8 +56,8 @@ export function AdminSidebar({
               title={isCollapsed ? item.label : undefined}
               className={`flex items-center ${isCollapsed ? "justify-center" : "space-x-3 px-3"} py-3 rounded-lg transition-smooth ${
                 isItemActive
-                  ? "bg-accent text-white font-bold"
-                  : "text-foreground/70 hover:bg-accent/10 hover:text-foreground"
+                  ? "bg-blue-900/90 text-white font-bold"
+                  : "text-foreground/70 hover:bg-blue-900/30 hover:text-foreground"
               }`}
             >
               <Icon className="h-5 w-5 shrink-0" />
@@ -75,8 +73,6 @@ export function AdminSidebar({
           className={` border border-blue-900/60 rounded-lg py-1 w-full flex items-center justify-center space-x-2 transition-smooth hover:bg-red-500/10 hover:text-red-600 hover:border-red-500 ${
             isCollapsed ? "px-0" : ""
           }`}
-          // onClick={logout}
-          title={isCollapsed ? "Cerrar Sesión" : undefined}
         >
           <CornerDownLeft className="h-4 w-4 shrink-0" />
           {!isCollapsed && <span className="truncate">Salir</span>}

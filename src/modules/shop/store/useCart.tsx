@@ -1,5 +1,5 @@
 import type { CartItem } from "@/interfaces/product.interface";
-import type { ProductInterface } from "@/interfaces/products-response.interface";
+import type { ProductInterface } from "@/modules/shop/interfaces/products-response.interface";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 

@@ -1,77 +1,95 @@
+import { CustomScreenLoading } from "@/components/custom/CustomScreenLoading";
+import { Pagination } from "@/components/custom/Pagination";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogOverlay,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { mockProducts2 } from "@/mocks/mocks";
-import { Edit2, Plus, Trash2 } from "lucide-react";
+import { useProducts } from "@/modules/shop/hooks/useProducts";
+// import { mockProducts2 } from "@/mocks/mocks";
+import { Plus } from "lucide-react";
 import { useState } from "react";
+import { useSearchParams } from "react-router";
+import { ProductTable } from "../../components/dashboard-products/ProductTable";
+import type { ProductInterface } from "@/modules/shop/interfaces/products-response.interface";
+import { ProductForm } from "../../components/dashboard-products/ProductForm";
+import { useCreateProduct } from "../../hooks/useCreateProduct";
+import { useUpdateProduct } from "../../hooks/useUpdateProduct";
+import type { ProductFormData } from "../../interfaces/product.schema";
+import { toast } from "sonner";
+import { useDeleteProduct } from "../../hooks/useDeleteProduct";
+import { ConfirmDialog } from "../../components/dashboard-products/ConfirmDialog";
 
 export const ProductsDashboard = () => {
-  //   const { user, isLoading } = useAuthStore()
   const [open, setOpen] = useState(false);
-  const [products, setProducts] = useState(mockProducts2);
-  // const [showForm, setShowForm] = useState(false);
-  const [editingId, setEditingId] = useState<string | null>(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    price: "",
-    stock: "",
-    category: "",
-  });
+  const [selectedProduct, setSelectedProduct] =
+    useState<ProductInterface | null>(null);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const { mutateAsync: createProduct, isPending: isCreating } =
+    useCreateProduct();
+  const { mutateAsync: updateProduct, isPending: isUpdating } =
+    useUpdateProduct();
+  const { mutateAsync: deleteProduct, isPending: isDeleting } =
+    useDeleteProduct();
 
-  //   useEffect(() => {
-  //     if (!isLoading && (!user || !user.isAdmin)) {
-  //       router.push("/login")
-  //     }
-  //   }, [user, isLoading, router])
-
-  //   if (isLoading || !user || !user.isAdmin) {
-  //     return null
-  //   }
-
-  const handleEdit = (product: (typeof products)[0]) => {
-    setEditingId(product.id);
-    setFormData({
-      name: product.name,
-      price: product.price.toString(),
-      stock: product.stock.toString(),
-      category: product.category,
-    });
+  const handleCreate = () => {
+    setSelectedProduct(null);
     setOpen(true);
   };
 
-  const handleDelete = (id: string) => {
-    setProducts(products.filter((p) => p.id !== id));
+  const handleEdit = (product: ProductInterface) => {
+    setSelectedProduct(product);
+    setOpen(true);
   };
 
-  const handleSave = () => {
-    if (editingId) {
-      setProducts(
-        products.map((p) =>
-          p.id === editingId
-            ? {
-                ...p,
-                name: formData.name,
-                price: parseFloat(formData.price),
-                stock: parseInt(formData.stock),
-                category: formData.category,
-              }
-            : p,
-        ),
-      );
+  const handleSubmit = async (data: ProductFormData) => {
+    console.log(data.imagenes);
+    try {
+      if (selectedProduct) {
+        await updateProduct({
+          id: selectedProduct.idProducto,
+          datos: data,
+        });
+        toast.success("Producto actualizado correctamente");
+      } else {
+        await createProduct(data);
+        toast.success("Producto creado correctamente");
+      }
+      setOpen(false);
+    } catch (error: any) {
+      toast.error(error.message);
     }
-    setOpen(false);
-    setFormData({ name: "", price: "", stock: "", category: "" });
-    setEditingId(null);
   };
+
+  const [productToDelete, setProductToDelete] = useState<number | null>(null);
+
+    const handleDeleteProduct = async (productId: number) => {
+    try {
+      await deleteProduct(productId);
+      toast.success("Producto eliminado correctamente.");
+      setProductToDelete(null);
+    } catch {
+      toast.error("No se pudo eliminar el producto.");
+    }
+  };
+
+  const confirmDeleteProduct = () => {
+    if (productToDelete !== null){
+      handleDeleteProduct(productToDelete);
+    }
+  }
+
+  const updateParams = (newPage: number) => {
+    const params = new URLSearchParams(searchParams);
+    params.set("page", String(newPage));
+    setSearchParams(params);
+  };
+
+  const handleChangePage = (nextPage: number) => {
+    updateParams(nextPage - 1);
+  };
+
+  const { data: products, isLoading } = useProducts({ retry: false });
+
+  if (isLoading) {
+    return <CustomScreenLoading></CustomScreenLoading>;
+  }
 
   return (
     <div className="flex bg-background animate-fade-in">
@@ -83,185 +101,53 @@ export const ProductsDashboard = () => {
                 Gestión de Productos
               </h1>
               <p className="text-muted-foreground">
-                Total: {products.length} productos
+                Total: {products?.totalElements} productos
               </p>
             </div>
             <Button
-              onClick={() => setOpen(true)}
               className="bg-[#1e40af] hover:bg-[#1e3a8a] text-white transition-smooth hover:scale-105 shadow-md hover:shadow-lg flex items-center gap-2"
+              onClick={handleCreate}
             >
+              <Plus />
               Nuevo Producto
             </Button>
           </div>
 
-          <Dialog open={open} onOpenChange={setOpen}>
-            {/* <DialogOverlay className="bg-black/40 backdrop-blur-sm" /> */}
-            <DialogContent className="sm:max-w-[600px]">
-              <DialogHeader>
-                <DialogTitle>
-                  {editingId ? "Editar Producto" : "Nuevo Producto"}
-                </DialogTitle>
-
-                <DialogDescription>
-                  Completa la información del producto.
-                </DialogDescription>
-              </DialogHeader>
-
-              <div className="space-y-6">
-                <div className="grid grid-cols-2 gap-4">
-                  <Input
-                    placeholder="Nombre"
-                    value={formData.name}
-                    onChange={(e) =>
-                      setFormData({ ...formData, name: e.target.value })
-                    }
-                  />
-
-                  <Input
-                    placeholder="Precio"
-                    type="number"
-                    value={formData.price}
-                    onChange={(e) =>
-                      setFormData({ ...formData, price: e.target.value })
-                    }
-                  />
-
-                  <Input
-                    placeholder="Stock"
-                    type="number"
-                    value={formData.stock}
-                    onChange={(e) =>
-                      setFormData({ ...formData, stock: e.target.value })
-                    }
-                  />
-
-                  <Input
-                    placeholder="Categoría"
-                    value={formData.category}
-                    onChange={(e) =>
-                      setFormData({ ...formData, category: e.target.value })
-                    }
-                  />
-                </div>
-
-                <DialogFooter>
-                  <Button variant="outline" onClick={() => setOpen(false)}>
-                    Cancelar
-                  </Button>
-
-                  <Button
-                    className="bg-accent hover:bg-accent/90 text-white"
-                    onClick={handleSave}
-                  >
-                    Guardar
-                  </Button>
-                </DialogFooter>
-              </div>
-            </DialogContent>
-          </Dialog>
+          <ProductForm
+            open={open}
+            onOpenChange={setOpen}
+            // mode={selectedProduct ? "update" : "create"}
+            product={selectedProduct}
+            onSubmit={handleSubmit}
+            isPending={isCreating || isUpdating}
+          ></ProductForm>
 
           {/* Products Table */}
-          <Card className="p-6 border-border/50">
-            <div className="overflow-x-auto">
-              <table className="w-full">
-                <thead>
-                  <tr className="border-b border-border">
-                    <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
-                      Imagen
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
-                      Nombre
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
-                      Precio
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
-                      Stock
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
-                      Categoría
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
-                      Rating
-                    </th>
-                    <th className="text-left py-3 px-4 font-semibold text-muted-foreground">
-                      Acciones
-                    </th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {products.map((product) => (
-                    <tr
-                      key={product.id}
-                      className="border-b border-border hover:bg-muted/50 transition-smooth"
-                    >
-                      <td className="py-3 px-4">
-                        <div className="relative w-10 h-10 rounded-md overflow-hidden bg-muted">
-                          <img
-                            src={product.image}
-                            alt={product.name}
-                            className="object-cover"
-                          />
-                        </div>
-                      </td>
-                      <td className="py-3 px-4 font-medium text-foreground">
-                        {product.name}
-                      </td>
-                      <td className="py-3 px-4 font-semibold text-accent">
-                        ${product.price}
-                      </td>
-                      <td className="py-3 px-4">
-                        <span
-                          className={`px-2 py-1 rounded text-xs font-semibold ${
-                            product.stock > 20
-                              ? "bg-green-500/10 text-green-600"
-                              : product.stock > 5
-                                ? "bg-yellow-500/10 text-yellow-600"
-                                : "bg-red-500/10 text-red-600"
-                          }`}
-                        >
-                          {product.stock}
-                        </span>
-                      </td>
-                      <td className="py-3 px-4 text-muted-foreground text-sm">
-                        {product.category}
-                      </td>
-                      <td className="py-3 px-4">
-                        <div className="flex items-center gap-1">
-                          <span className="text-sm font-semibold text-foreground">
-                            {product.rating}
-                          </span>
-                          <span className="text-xs text-muted-foreground">
-                            ({product.reviews})
-                          </span>
-                        </div>
-                      </td>
-                      <td className="py-3 px-4">
-                        <div className="flex gap-2">
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="text-blue-600 hover:bg-blue-500/10"
-                            onClick={() => handleEdit(product)}
-                          >
-                            <Edit2 className="h-4 w-4" />
-                          </Button>
-                          <Button
-                            size="sm"
-                            variant="ghost"
-                            className="text-red-600 hover:bg-red-500/10"
-                            onClick={() => handleDelete(product.id)}
-                          >
-                            <Trash2 className="h-4 w-4" />
-                          </Button>
-                        </div>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          </Card>
+          <ProductTable
+            products={products}
+            onEdit={handleEdit}
+            onDelete={(id)=>setProductToDelete(id)}
+          />
+          {products && products.content.length > 0 && (
+            <Pagination
+              totalItems={products.totalElements}
+              itemsPerPage={products.size}
+              currentPage={products.number + 1}
+              onChangePage={handleChangePage}
+            />
+          )}
+
+          <ConfirmDialog
+            open={productToDelete !== null}
+            onOpenChange={(open) => {
+              if (!open) setProductToDelete(null);
+            }}
+            title="¿Eliminar producto?"
+            description="Esta acción no se puede deshacer."
+            confirmText="Eliminar"
+            onConfirm={confirmDeleteProduct}
+            isPending={isDeleting}
+          />
         </div>
       </main>
     </div>
